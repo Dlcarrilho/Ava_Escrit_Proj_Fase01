@@ -37,7 +37,9 @@ for p in range(len(amostragem)):
   else:
     valor_menor_igual_zero.append(amostragem[p][7])
     
-    
+tam_amostra = len(valor_maior_zero) + len(valor_menor_igual_zero)
+per_gratuitos = round(float(len(valor_menor_igual_zero) / tam_amostra),2)
+per_pagos =  round(1- float(len(valor_menor_igual_zero) / tam_amostra),2)
 
   
 # Pergunta 1: Qual o percentual de jogos gratuitos e pagos na plataforma?
