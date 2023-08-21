@@ -8,27 +8,25 @@ import numpy
 arq = open("lista_games.csv")
 dataset = []
 amostragem = []
-primeira = True
 
+primeira = True
 for line in arq:
   if primeira:
     primeira = False
     continue
-  lista = line.strip().split(',')
-  dataset.append(lista)
-  #print(lista)
+  linhas = line.strip().split(',')
+  dataset.append(linhas)
 
-## Gerador de Amostragem - 20 observações
+## GERADOR DE AMOSTRAGEM
 
-def amostraAleatoria(dataset):
-  return random.choice(dataset)
+def amostraAleatoria(y):
+  return random.choice(y)
 
-for a in range(0,4):
-  amostragem.append(amostraAleatoria(dataset))
-  print(amostragem[a][0])
-  
-
-
+#### GERANDO AMOSTRA
+for a in range(0,20):
+  y = amostraAleatoria(dataset) 
+  if y not in amostragem: # garantindo que não escolha o mesmo elemento mais de uma vez
+    amostragem.append(y)
 
 
 
