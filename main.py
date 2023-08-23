@@ -38,9 +38,9 @@ for p in range(len(amostragem)):
     valor_menor_igual_zero.append(amostragem[p][7])
     
 tam_amostra = len(valor_maior_zero) + len(valor_menor_igual_zero)
-per_gratuitos = round(float(len(valor_menor_igual_zero) / tam_amostra),2)
-per_pagos =  round(1- float(len(valor_menor_igual_zero) / tam_amostra),2)
-
+per_gratuitos = round(float(len(valor_menor_igual_zero) / tam_amostra),3)
+per_pagos =  round(1- float(len(valor_menor_igual_zero) / tam_amostra),3)
+print(f'==> Percentual de Jogos Gratuitos: {per_gratuitos} | Percentual de jogos pagos: {per_pagos}')
   
 # Pergunta 1: Qual o percentual de jogos gratuitos e pagos na plataforma?
 #Pergunta 2: Qual o ano com o maior número de novos jogos? Em caso de empate, retorne uma lista com os anos empatados.
