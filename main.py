@@ -22,11 +22,17 @@ class Lercsv():
             dados.append(coluna)
         return dados
      
-## GRAVADOR DE DADOS EM CSV
+## GRAVADOR DE DADOS EM CSV - amostragem
 
+class Gravar():
+  def __init__(self, arq):
+    self.arq = arq
 
-
-
+  def gravar(self):
+    a = open('amostragem.csv', 'w', newline='')
+    w = csv.writer(a)
+    for i in self.arq:
+      w.writerow(i)
 
 
 ## GERADOR DE AMOSTRAGEM
@@ -44,7 +50,9 @@ class Amostra():
 
     return amostragem
 
-   
+
+
+    
 # Pergunta 1: Qual o percentual de jogos gratuitos e pagos na plataforma?
 #Pergunta 2: Qual o ano com o maior número de novos jogos? Em caso de empate, retorne uma lista com os anos empatados.
 #Pergunta 3:  Para demonstrar a facilidade de revisão e modificação de uso do módulo desenvolvido, uma pergunta 
