@@ -69,18 +69,43 @@ class Estatistica():
     per_pagos =  round(1- float(len(valor_menor_igual_zero) / tam_amostra),3)
     print(f'==> Percentual de Jogos Gratuitos: {per_gratuitos} | Percentual de jogos pagos: {per_pagos}  <==')
 
+
+## CRIAR LISTA COM OS ANOS
+def lista_ano(y):
+  for index, ano in enumerate(y):
+    lista.append(int(y[index][2].split()[2]))
+  return lista
+
+## CONTAGEM - JOGOS/ANO
+
+### criando chave da lista
+
+def cont_ano(z):
+  key_lista = []
+  for index, ano in enumerate(z):
+    if z[index] not in key_lista:
+      key_lista.append(z[index])
+  print(key_lista)
+
+  contagem = []
+  for ano in key_lista:
+    contagem.append(z.count(ano))
+  print(contagem)
+
+### criando dicionário com os anos e a contagem de cada ano
+  dict_contagem = {}
+  for i in range(len(key_lista)):
+    dict_contagem[key_lista[i]] = contagem[i]
+  print(dict_contagem)
+
 ## CALCULANDO: ANO COM MAIOR NUMERO DE JOGOS + LISTA DE COMO OS ANOS EMPATADOS
 
 a = Lercsv('amostragem.csv')
 lerArq = a.abrirArq()
 lista = []
+l = lista_ano(lerArq)
+cont_ano(l)
 
-def lista_ano(y):
-  for count, ano in enumerate(y):
-    lista.append(int(y[count][2].split()[2]))
-  return lista
-
-  
 
 #Pergunta 2: Qual o ano com o maior número de novos jogos? Em caso de empate, retorne uma lista com os anos empatados.
 #Pergunta 3:  Para demonstrar a facilidade de revisão e modificação de uso do módulo desenvolvido, uma pergunta 
