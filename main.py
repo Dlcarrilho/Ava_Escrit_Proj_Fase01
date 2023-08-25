@@ -13,7 +13,7 @@ class Lercsv():
   def abrirArq(self):
     with open(self.arquivo, 'r') as arquivo_csv:
         leitor = csv.reader(arquivo_csv, delimiter = ',')
-        cabecario = True
+        cabecario = False
         dados = []
         for coluna in leitor:
           if (cabecario):
@@ -59,10 +59,10 @@ class Estatistica():
     valor_menor_igual_zero = []
     for p in range(len(self.lista)):
       
-      if float(self.lista[p][7]) > 0:
-        valor_maior_zero.append(self.lista[p][7])
+      if float(self.lista[p][6]) != 0:
+        valor_maior_zero.append(self.lista[p][6])
       else:
-        valor_menor_igual_zero.append(self.lista[p][7])
+        valor_menor_igual_zero.append(self.lista[p][6])
     
     tam_amostra = len(valor_maior_zero) + len(valor_menor_igual_zero)
     per_gratuitos = round(float(len(valor_menor_igual_zero) / tam_amostra),3)
@@ -71,6 +71,16 @@ class Estatistica():
 
 ## CALCULANDO: ANO COM MAIOR NUMERO DE JOGOS + LISTA DE COMO OS ANOS EMPATADOS
 
-# Pergunta 1: Qual o percentual de jogos gratuitos e pagos na plataforma?
+a = Lercsv('amostragem.csv')
+lerArq = a.abrirArq()
+lista = []
+
+def lista_ano(y):
+  for count, ano in enumerate(y):
+    lista.append(int(y[count][2].split()[2]))
+  return lista
+
+  
+
 #Pergunta 2: Qual o ano com o maior número de novos jogos? Em caso de empate, retorne uma lista com os anos empatados.
 #Pergunta 3:  Para demonstrar a facilidade de revisão e modificação de uso do módulo desenvolvido, uma pergunta 
