@@ -1,4 +1,4 @@
-## BIBLIOTECAS UTILIZADAS:
+# BIBLIOTECAS UTILIZADAS:
 
 import random
 import csv
@@ -13,7 +13,7 @@ class Lercsv():
   def abrirArq(self):
     with open(self.arquivo, 'r') as arquivo_csv:
         leitor = csv.reader(arquivo_csv, delimiter = ',')
-        cabecario = False
+        cabecario = True # troca aqui
         dados = []
         for coluna in leitor:
           if (cabecario):
@@ -22,7 +22,7 @@ class Lercsv():
             dados.append(coluna)
         return dados
      
-## GRAVADOR DE DADOS EM CSV - amostragem
+# GRAVADOR DE DADOS EM CSV - amostragem
 
 class Gravar():
   def __init__(self, arq):
@@ -34,7 +34,7 @@ class Gravar():
     for i in self.arq:
       w.writerow(i)
 
-## GERADOR DE AMOSTRAGEM
+# GERADOR DE AMOSTRAGEM
 
 class Amostra():
   def __init__(self, amostra):
@@ -48,9 +48,9 @@ class Amostra():
         amostragem.append(y)
     return amostragem
     
-## CALCULANDO O % DE JOGOS GRATUITOS E PAGOS
+# CALCULANDO O % DE JOGOS GRATUITOS E PAGOS
 
-class Estatistica():
+class Estatistica_venda():
   def __init__(self, lista):
         self.lista = lista
   
@@ -69,42 +69,64 @@ class Estatistica():
     per_pagos =  round(1- float(len(valor_menor_igual_zero) / tam_amostra),3)
     print(f'==> Percentual de Jogos Gratuitos: {per_gratuitos} | Percentual de jogos pagos: {per_pagos}  <==')
 
-
-## CRIAR LISTA COM OS ANOS
-def lista_ano(y):
+# CONTAGEM - JOGOS/ANO
+def dados(y):
+  lista = []
   for index, ano in enumerate(y):
     lista.append(int(y[index][2].split()[2]))
   return lista
-
-## CONTAGEM - JOGOS/ANO
-
-### criando chave da lista
-
-def cont_ano(z):
+#### preparar dados para análise
+def dic(z): # criar dicionário para ser utilizado na análise
   key_lista = []
   for index, ano in enumerate(z):
     if z[index] not in key_lista:
       key_lista.append(z[index])
-  print(key_lista)
+  print("key lista", key_lista)
 
   contagem = []
   for ano in key_lista:
     contagem.append(z.count(ano))
-  print(contagem)
+  print('contagem', contagem)
+  dic_contagem = dict(zip(key_lista, contagem)) # criar dicionário (ano: qtdes) / utilizado na estatística - lançamento dos jogos
+  print(dic_contagem)
 
-### criando dicionário com os anos e a contagem de cada ano
-  dict_contagem = {}
-  for i in range(len(key_lista)):
-    dict_contagem[key_lista[i]] = contagem[i]
-  print(dict_contagem)
+#### calcular estátistica de lançamento dos jogos no ano
+class Estatistica_lancamento():
+  def __init__(self, dicionario):
+    self.dicionario = dicionario
 
-## CALCULANDO: ANO COM MAIOR NUMERO DE JOGOS + LISTA DE COMO OS ANOS EMPATADOS
+  def maior_lanc(self):
+    print(self.dicionario)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# CALCULANDO: ANO COM MAIOR NUMERO DE JOGOS + LISTA DE COMO OS ANOS EMPATADOS
 
 a = Lercsv('amostragem.csv')
 lerArq = a.abrirArq()
-lista = []
-l = lista_ano(lerArq)
-cont_ano(l)
+
+estPrice = Estatistica_venda(lerArq)
+estPrice.est_calc()
+
+dados = dados(lerArq)
+dic = dic(dados)
+dic = Estatistica_lancamento(dic)
+dic.maior_lanc()
+
+
+#e = Estatistica(lerArq)
+#e.est_calc()
 
 
 #Pergunta 2: Qual o ano com o maior número de novos jogos? Em caso de empate, retorne uma lista com os anos empatados.
