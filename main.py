@@ -44,7 +44,7 @@ class Amostra():
     amostragem = []
     for a in range(0,20):
       y = random.choice(self.amostra) 
-      if y not in amostragem: # garantindo que não escolha o mesmo elemento mais de uma vez
+      if y not in amostragem: # garantindo que ñ escolha o mesmo elemento mais de uma vez
         amostragem.append(y)
     return amostragem
     
@@ -67,47 +67,40 @@ class Estatistica_venda():
     tam_amostra = len(valor_maior_zero) + len(valor_menor_igual_zero)
     per_gratuitos = round(float(len(valor_menor_igual_zero) / tam_amostra),3)
     per_pagos =  round(1- float(len(valor_menor_igual_zero) / tam_amostra),3)
-    print(f'==> Percentual de Jogos Gratuitos: {per_gratuitos} | Percentual de jogos pagos: {per_pagos}  <==')
+    print(f'==> Percentual de Jogos Gratuitos: {per_gratuitos} | Percentual de jogos Pagos: {per_pagos}  <==')
 
 # CONTAGEM - JOGOS/ANO
-def dados(y):
-  lista = []
-  for index, ano in enumerate(y):
-    lista.append(int(y[index][2].split()[2]))
-  return lista
-#### preparar dados para análise
-def dic(z): # criar dicionário para ser utilizado na análise
-  key_lista = []
-  for index, ano in enumerate(z):
-    if z[index] not in key_lista:
-      key_lista.append(z[index])
-  print("key lista", key_lista)
 
-  contagem = []
-  for ano in key_lista:
-    contagem.append(z.count(ano))
-  print('contagem', contagem)
-  dic_contagem = dict(zip(key_lista, contagem)) # criar dicionário (ano: qtdes) / utilizado na estatística - lançamento dos jogos
-  print(dic_contagem)
-
-#### calcular estátistica de lançamento dos jogos no ano
 class Estatistica_lancamento():
-  def __init__(self, dicionario):
-    self.dicionario = dicionario
+  def __init__(self, lerArq):
+    self.lerArq = lerArq
 
-  def maior_lanc(self):
-    print(self.dicionario)
-
-
-
-
-
-
-
-
-
-
-
+  def dados(self):
+    lista = []
+    for index, ano in enumerate(self.lerArq):
+      lista.append(int(self.lerArq[index][2].split()[2]))
+    lista = lista
+    key_lista = []
+    for index, ano in enumerate(lista):
+      if lista[index] not in key_lista:
+        key_lista.append(lista[index])
+    print("key lista", key_lista)
+  
+    contagem = []
+    for ano in key_lista:
+      contagem.append(lista.count(ano))
+    #print('contagem', contagem)
+    dic_contagem = dict(zip(key_lista, contagem)) # criar dicionário (ano: qtdes)
+    print(dic_contagem)
+    
+    emp = {}
+    for key, value in dic_contagem.items():
+        emp.setdefault(value, set()).add(key)
+    
+    result = [key for key, values in emp.items()
+                                  if len(values) > 1]
+    r = result
+    print(r)
 
 
 
@@ -119,14 +112,12 @@ lerArq = a.abrirArq()
 estPrice = Estatistica_venda(lerArq)
 estPrice.est_calc()
 
-dados = dados(lerArq)
-dic = dic(dados)
-dic = Estatistica_lancamento(dic)
-dic.maior_lanc()
+estLanc = Estatistica_lancamento(lerArq)
+d = estLanc.dados()
 
 
-#e = Estatistica(lerArq)
-#e.est_calc()
+
+
 
 
 #Pergunta 2: Qual o ano com o maior número de novos jogos? Em caso de empate, retorne uma lista com os anos empatados.
