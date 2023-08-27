@@ -55,7 +55,9 @@ class Estatistica_venda():
         self.lista = lista
   
   def perfilVendas(self):
+    print()
     print('*** ESTATISTICA - VENDAS/JOGOS ***')
+    print()
     valor_maior_zero = []
     valor_menor_igual_zero = []
     for p in range(len(self.lista)):
@@ -80,6 +82,7 @@ class Estatistica_lancamento:
   def qtdLan(self):
     print()
     print('*** ESTATISTICA - LANÇAMENTOS JOGOS/ANO ***')
+    print()
     '''preparando a base para análise'''
     lista = []
     for index, ano in enumerate(self.lerArq):
@@ -118,25 +121,25 @@ class Estatistica_lancamento:
       print('==> Exitem anos com a mesma quantidade de lancamentos (ano, qtdes) <==')
       print(empate)   
 
-    '''buscando o ano com o maior lançamento'''
+    '''buscando o ano com o(s) maior(es) lançamento'''
     maior = dic_contagem[max(dic_contagem, key=dic_contagem.get)]
-    print(maior)
+    print()
+    print(f'==> O ano com o(s) maior(es) lançamento(s): <==')
+    print()
     for key, value in dic_contagem.items():
       if value == maior:
-        ano = key
-        qtde = value
-    
-    print()
-    print(f'==> O ano como maior lançamento é {key} com {value} obvervação <==')
+        print(f'-*-*- {key}, com {value} observações -*-*-')
+
+'''O GAME com maior volor de venda '''
     
 # CALCULANDO: ANO COM MAIOR NUMERO DE JOGOS + LISTA DE COMO OS ANOS EMPATADOS
 
-arq = Lercsv('arquivo.csv')
+'''arq = Lercsv('arquivo.csv')
 abrir = arq.abrirArq()
 a = Amostra(abrir)
 gravar = a.gerar_amostra()
 g = Gravar(gravar)
-g.gravar()
+g.gravar()'''
 
 amostragem = Lercsv('amostragem.csv')
 amostra = amostragem.abrirArq()
