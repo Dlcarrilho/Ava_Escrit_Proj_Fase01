@@ -54,7 +54,8 @@ class Estatistica_venda():
   def __init__(self, lista):
         self.lista = lista
   
-  def est_calc(self):
+  def perfilVendas(self):
+    print('*** ESTATISTICA - VENDAS/JOGOS ***')
     valor_maior_zero = []
     valor_menor_igual_zero = []
     for p in range(len(self.lista)):
@@ -69,13 +70,17 @@ class Estatistica_venda():
     per_pagos =  round(1- float(len(valor_menor_igual_zero) / tam_amostra),3)
     print(f'==> Percentual de Jogos Gratuitos: {per_gratuitos} | Percentual de jogos Pagos: {per_pagos}  <==')
 
-# CONTAGEM - JOGOS/ANO
+# CALCULANDO QUANITDADE LANÇAMENTO POR ANO
 
-class Estatistica_lancamento():
+class Estatistica_lancamento:
   def __init__(self, lerArq):
+    
     self.lerArq = lerArq
-
-  def dados(self):
+  
+  def qtdLan(self):
+    print()
+    print('*** ESTATISTICA - LANÇAMENTOS JOGOS/ANO ***')
+    '''preparando a base para análise'''
     lista = []
     for index, ano in enumerate(self.lerArq):
       lista.append(int(self.lerArq[index][2].split()[2]))
@@ -84,15 +89,15 @@ class Estatistica_lancamento():
     for index, ano in enumerate(lista):
       if lista[index] not in key_lista:
         key_lista.append(lista[index])
-    print("key lista", key_lista)
+    #print("key lista", key_lista)
   
     contagem = []
     for ano in key_lista:
       contagem.append(lista.count(ano))
     #print('contagem', contagem)
     dic_contagem = dict(zip(key_lista, contagem)) # criar dicionário (ano: qtdes)
-    print(dic_contagem)
-    
+    #print(dic_contagem)
+    '''buscando o os valores repetidos (empate)'''
     emp = {}
     for key, value in dic_contagem.items():
         emp.setdefault(value, set()).add(key)
@@ -100,25 +105,48 @@ class Estatistica_lancamento():
     result = [key for key, values in emp.items()
                                   if len(values) > 1]
     r = result
-    print(r)
+    #print(r)
+    '''buscando o ano correspodente dos valores repetidos'''
+    if len(r) > 0:
+      ano_empates = []
+      valor_empates = []
+      for key, value in dic_contagem.items():
+        if value in r:
+          ano_empates.append(key)
+          valor_empates.append(value)
+      empate = sorted(dict(zip(ano_empates, valor_empates)).items())
+      print('==> Exitem anos com a mesma quantidade de lancamentos (ano, qtdes) <==')
+      print(empate)   
 
-
-
+    '''buscando o ano com o maior lançamento'''
+    maior = dic_contagem[max(dic_contagem, key=dic_contagem.get)]
+    print(maior)
+    for key, value in dic_contagem.items():
+      if value == maior:
+        ano = key
+        qtde = value
+    
+    print()
+    print(f'==> O ano como maior lançamento é {key} com {value} obvervação <==')
+    
 # CALCULANDO: ANO COM MAIOR NUMERO DE JOGOS + LISTA DE COMO OS ANOS EMPATADOS
 
-a = Lercsv('amostragem.csv')
-lerArq = a.abrirArq()
+arq = Lercsv('arquivo.csv')
+abrir = arq.abrirArq()
+a = Amostra(abrir)
+gravar = a.gerar_amostra()
+g = Gravar(gravar)
+g.gravar()
 
-estPrice = Estatistica_venda(lerArq)
-estPrice.est_calc()
+amostragem = Lercsv('amostragem.csv')
+amostra = amostragem.abrirArq()
 
-estLanc = Estatistica_lancamento(lerArq)
-d = estLanc.dados()
+Estatistica_venda = Estatistica_venda(amostra)
+Estatistica_venda.perfilVendas()
 
-
-
-
-
+Estatistica_lancamento = Estatistica_lancamento(amostra)
+Estatistica_lancamento.qtdLan()
 
 #Pergunta 2: Qual o ano com o maior número de novos jogos? Em caso de empate, retorne uma lista com os anos empatados.
 #Pergunta 3:  Para demonstrar a facilidade de revisão e modificação de uso do módulo desenvolvido, uma pergunta 
+
