@@ -13,14 +13,14 @@ class Lercsv():
   def abrirArq(self):
     with open(self.arquivo, 'r') as arquivo_csv:
         leitor = csv.reader(arquivo_csv, delimiter = ',')
-        cabecario = True # troca aqui
+        cabecario = False # troca aqui
         dados = []
         for coluna in leitor:
           if (cabecario):
             cabecario = False
           else:
             dados.append(coluna)
-        return dados
+    return dados
      
 # GRAVADOR DE DADOS EM CSV - amostragem
 
@@ -33,7 +33,7 @@ class Gravar():
     w = csv.writer(a)
     for i in self.arq:
       w.writerow(i)
-
+   
 # GERADOR DE AMOSTRAGEM
 
 class Amostra():
@@ -44,7 +44,7 @@ class Amostra():
     amostragem = []
     for a in range(0,20):
       y = random.choice(self.amostra) 
-      if y not in amostragem: # garantindo que ñ escolha o mesmo elemento mais de uma vez
+      if y not in amostragem: # garantir que ñ escolha o mesmo elemento
         amostragem.append(y)
     return amostragem
     
@@ -58,19 +58,40 @@ class Estatistica_venda():
     print()
     print('*** ESTATISTICA - VENDAS/JOGOS ***')
     print()
+    
+    global valor_maior_zero
+    global valor_menor_igual_zero
+    global tam_amostra
+    
     valor_maior_zero = []
     valor_menor_igual_zero = []
     for p in range(len(self.lista)):
       
-      if float(self.lista[p][6]) != 0:
-        valor_maior_zero.append(self.lista[p][6])
+      if float(self.lista[p][6]) > 0:
+        valor_maior_zero.append(float(self.lista[p][6]))
       else:
-        valor_menor_igual_zero.append(self.lista[p][6])
+        valor_menor_igual_zero.append(float(self.lista[p][6]))
     
     tam_amostra = len(valor_maior_zero) + len(valor_menor_igual_zero)
-    per_gratuitos = round(float(len(valor_menor_igual_zero) / tam_amostra),3)
-    per_pagos =  round(1- float(len(valor_menor_igual_zero) / tam_amostra),3)
-    print(f'==> Percentual de Jogos Gratuitos: {per_gratuitos} | Percentual de jogos Pagos: {per_pagos}  <==')
+    per_gratuitos = round(float(len(valor_menor_igual_zero) / tam_amostra),2)
+    per_pagos =  round(1- float(len(valor_menor_igual_zero) / tam_amostra),2)
+    print(f'==> Percentual de Jogos Gratuitos: {per_gratuitos} | Percentual de jogos Pagos:{per_pagos}')
+    
+  '''O GAME com maior valor de venda e seu título - PERGUNTA 3'''
+  def game_maiorValor(self):
+    nome_games = []
+    ano_games = []
+    maior_valor = max(valor_maior_zero)
+    for i in range(len(self.lista)):
+      if float(self.lista[i][6]) == float(maior_valor):
+        nome_games.append(str(self.lista[i][1]))
+        ano_games.append(str(self.lista[i][2]))
+    print()
+    print(f'==> O maior valor de venda: ${maior_valor} <==')
+    print()
+    print(f'==> Títulos do(s) GAME(S) com maior valor/venda: <==')
+    print()
+    print(f'Título: {nome_games} | Ano-Lançamento: {ano_games}')
 
 # CALCULANDO QUANITDADE LANÇAMENTO POR ANO
 
@@ -109,7 +130,7 @@ class Estatistica_lancamento:
                                   if len(values) > 1]
     r = result
     #print(r)
-    '''buscando o ano correspodente dos valores repetidos'''
+    '''buscando o ano correspodente aos valores repetidos'''
     if len(r) > 0:
       ano_empates = []
       valor_empates = []
@@ -130,26 +151,29 @@ class Estatistica_lancamento:
       if value == maior:
         print(f'-*-*- {key}, com {value} observações -*-*-')
 
-'''O GAME com maior volor de venda '''
-    
+   
 # CALCULANDO: ANO COM MAIOR NUMERO DE JOGOS + LISTA DE COMO OS ANOS EMPATADOS
 
-'''arq = Lercsv('arquivo.csv')
-abrir = arq.abrirArq()
-a = Amostra(abrir)
-gravar = a.gerar_amostra()
-g = Gravar(gravar)
-g.gravar()'''
+# PREPARAÇÃO DO DASET PARA ANÁLISE
+## parar gerar o arquivo com a amostragem de 20 observações
+
+#arq = Lercsv('arquivo.csv')
+#abrir = arq.abrirArq()
+#a = Amostra(abrir)
+#gravar = a.gerar_amostra()
+#g = Gravar(gravar)
+#g.gravar() # gerou o arquvivo csv amostragem
 
 amostragem = Lercsv('amostragem.csv')
 amostra = amostragem.abrirArq()
 
+# Resp: PERGUNTA 1
 Estatistica_venda = Estatistica_venda(amostra)
 Estatistica_venda.perfilVendas()
 
+# Resp: PERGUNTA 2
 Estatistica_lancamento = Estatistica_lancamento(amostra)
 Estatistica_lancamento.qtdLan()
 
-#Pergunta 2: Qual o ano com o maior número de novos jogos? Em caso de empate, retorne uma lista com os anos empatados.
-#Pergunta 3:  Para demonstrar a facilidade de revisão e modificação de uso do módulo desenvolvido, uma pergunta 
-
+## Resp: PERGUNTA 3
+Estatistica_venda.game_maiorValor()
